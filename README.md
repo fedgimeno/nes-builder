@@ -8,7 +8,7 @@ You will need the following dependencies pre-installed:
 
 ## Setup
 
-Clone this repository in your local machine and open a terminal on the repository's folder, the follow the instructions below.
+Clone this repository in your local machine and open a terminal on the repository's folder, then follow the instructions below.
 
 ### Install the mono runtimes:
 
