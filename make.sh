@@ -28,7 +28,7 @@ if test -f "$CHR_OUT_F"; then
     rm $CHR_OUT_F
 fi
 
-python3 ./tools/nes_chr_encode.py --color0=000000 --color1=333333 --color2=555555 --color3=AAAAAA $CHR_IN_F $CHR_OUT_F || { echo .; echo "Error assembling CHR"; exit 1; }
+python3 ./tools/nes-chr-encode/nes_chr_encode.py --color0=000000 --color1=333333 --color2=555555 --color3=AAAAAA $CHR_IN_F $CHR_OUT_F || { echo .; echo "Error assembling CHR"; exit 1; }
 
 #Make NES rom
 echo "Making NES rom..."

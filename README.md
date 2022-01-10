@@ -56,7 +56,7 @@ rm mesen.zip
 
 The 'make.sh' script expects the following input files in the `./src` directory
 * [project_name].s, *.s ---> The main 6502 ASM file plus any other ASM source files that may be included from the main module.
-* [project_name].png ---> The Sprites and BG tiles as a 128 x 256 PNG file.
+* [project_name].png ---> The Sprites and BG tiles as a 128 x 256 PNG file. For more information on how the png file needs to be formatted, please check the 'nes-chr-encode' documentation at tha author's github: https://github.com/play3577/nes-chr-encode.
 
 The script will generate the following output binary files in the `./bin` directory:
 * [project_name].nes
