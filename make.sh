@@ -4,9 +4,10 @@ docker run -it --rm --name nes-builder --privileged \
     -v /home/fuumarumota/Downloads/Roms/NES:/roms \
     -v mesen_cfg:/home/mono/.config \
     -v mesen_cfg_local:/home/mono/emu/ \
-    -v $(pwd)/src:/home/mono/src \
-    -v $(pwd)/out:/home/mono/out \
+    -v $(pwd)/$1/src:/home/mono/src \
+    -v $(pwd)/$1/out:/home/mono/out \
     -e PULSE_SERVER=unix:${XDG_RUNTIME_DIR}/pulse/native \
     -v ${XDG_RUNTIME_DIR}/pulse/native:${XDG_RUNTIME_DIR}/pulse/native \
     -v ~/.config/pulse/cookie:/root/.config/pulse/cookie \
-    nes-builder $@
+    nes-builder $2
+    
