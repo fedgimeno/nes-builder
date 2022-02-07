@@ -14,7 +14,7 @@ Clone this repository in your local machine and open a terminal on the repositor
 ```
 docker build  ./docker/. -t nes-builder
 ```
-Building the image will take a while so you can go grab a beer/coffee, walk the dog, talk to your mom...
+Building the image will take a while so you can go grab a beer/coffee, walk the dog, call your mom...
 
 ## Usage
 
