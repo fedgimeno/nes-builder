@@ -1,42 +1,12 @@
-#!/bin/bash
-
-if [ $# -eq 0 ]
-then
-    echo "Please provide a project's name. ie './make.sh my_project'"
-    exit 1
-fi
-
-CHR_IN_F=./src/$1.png
-PRG_IN_F=./src/$1.s
-PRG_OUT_F=./bin/$1_prg.bin
-CHR_OUT_F=./bin/$1_chr.bin
-NES_OUT_F=./bin/$1.nes
-
-#Compile program
-if test -f "$PRG_OUT_F"; then
-    echo "$PRG_OUT_F already exists, deleting it..."
-    rm $PRG_OUT_F
-fi
-
-echo "Assembling program..."
-./asm6f $PRG_IN_F $PRG_OUT_F || { echo .; echo "Error assembling PRG"; exit 1; }
-
-#Compiling CHR
-echo "Compiling CHR"
-if test -f "$CHR_OUT_F"; then
-    echo "$CHR_OUT_F already exists, deleting it..."
-    rm $CHR_OUT_F
-fi
-
-python3 ./tools/nes-chr-encode/nes_chr_encode.py --color0=000000 --color1=333333 --color2=555555 --color3=AAAAAA $CHR_IN_F $CHR_OUT_F || { echo .; echo "Error assembling CHR"; exit 1; }
-
-#Make NES rom
-echo "Making NES rom..."
-if test -f "$NES_OUT_F"; then
-    echo "$NES_OUT_F already exists, deleting it..."
-fi
-cat $PRG_OUT_F $CHR_OUT_F > $NES_OUT_F || { echo .; echo "Error compiling NES file"; exit 1; }
-
-echo "Running NES rom..."
-chmod 777 ./emu/Mesen.exe
-./emu/Mesen.exe $NES_OUT_F || exit 1
+docker run -it --rm --name nes-builder --privileged \
+    -e DISPLAY=${DISPLAY:-:0.0} \
+    -v /tmp/.X11-unix:/tmp/.X11-unix \
+    -v /home/fuumarumota/Downloads/Roms/NES:/roms \
+    -v mesen_cfg:/home/mono/.config \
+    -v mesen_cfg_local:/home/mono/emu/ \
+    -v $(pwd)/src:/home/mono/src \
+    -v $(pwd)/out:/home/mono/out \
+    -e PULSE_SERVER=unix:${XDG_RUNTIME_DIR}/pulse/native \
+    -v ${XDG_RUNTIME_DIR}/pulse/native:${XDG_RUNTIME_DIR}/pulse/native \
+    -v ~/.config/pulse/cookie:/root/.config/pulse/cookie \
+    nes-builder $@
