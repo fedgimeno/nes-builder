@@ -30,7 +30,7 @@ The 'make.sh' script expects the following input files in the `[project_folder]/
 * `[project_name]`.png ---> The Sprites and BG tiles as a 128 x 256 PNG file. For more information on how the png file needs to be formatted, please check the 'nes-chr-encode' documentation at the author's github: https://github.com/play3577/nes-chr-encode.
 
 
-The script will generate the following output binary files in the `./out` directory:
+The script will generate the following output binary files in the `[project_folder]/out` directory:
 * `[project_name]`.nes     - The actual assembled NES rom (PRG + CHR).
 * `[project_name]`_prg.bin - The PRG rom
 * `[project_name]`_chr.bin - The CHR rom
