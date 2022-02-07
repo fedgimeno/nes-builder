@@ -35,7 +35,7 @@ The script will generate the following output binary files in the `./out` direct
 * `[project_name]`_prg.bin - The PRG rom
 * `[project_name]`_chr.bin - The CHR rom
 
-After successfully assemblying the project, the Mesen emulator will be launched using the newly generated .nes file.
+After successfully assemblying the project, the [Mesen](https://www.mesen.ca/) emulator will be launched using the newly generated .nes file.
 
 To see the builder in action right away, you can try to build the demo project I have included in the `projects/demo` folder:
 `./make.sh "projects/demo" demo`
