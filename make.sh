@@ -1,7 +1,6 @@
 docker run -it --rm --name nes-builder --privileged \
     -e DISPLAY=${DISPLAY:-:0.0} \
     -v /tmp/.X11-unix:/tmp/.X11-unix \
-    -v /home/fuumarumota/Downloads/Roms/NES:/roms \
     -v mesen_cfg:/home/mono/.config \
     -v mesen_cfg_local:/home/mono/emu/ \
     -v $(pwd)/$1/src:/home/mono/src \
