@@ -17,7 +17,7 @@ RUN apt install -y git
 
 #Get the Mesen emulator
 RUN apt-get install unzip -y && \
-    curl -L https://github.com/SourMesen/Mesen/releases/download/0.9.9/Mesen.0.9.9.zip -o mesen.zip && \
+    curl -k -L https://github.com/SourMesen/Mesen/releases/download/0.9.9/Mesen.0.9.9.zip -o mesen.zip && \
     unzip mesen.zip -d ${HOME}/emu && \
     rm mesen.zip
 
