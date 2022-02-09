@@ -1,3 +1,16 @@
+#!/bin/bash
+
+if [ $# -lt 2 ]
+then
+    echo "Please provide a project's folder and name. ie './make.sh projects/demo demo'"
+    exit 1
+fi
+
+if [ ! -d "./$1/out" ]
+then
+    mkdir -p "./$1/out"
+fi
+
 docker run -it --rm --name nes-builder --privileged \
     -e DISPLAY=${DISPLAY:-:0.0} \
     -v /tmp/.X11-unix:/tmp/.X11-unix \
