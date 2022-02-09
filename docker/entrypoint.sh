@@ -1,11 +1,5 @@
 #!/bin/bash
 
-if [ $# -eq 0 ]
-then
-    echo "Please provide a project's name. ie './make.sh my_project'"
-    exit 1
-fi
-
 CHR_IN_F=./src/$1.png
 PRG_IN_F=./src/$1.s
 PRG_OUT_F=./out/$1_prg.bin
