@@ -26,13 +26,14 @@ RUN git clone https://github.com/play3577/nes-chr-encode.git ${HOME}/tools/nes-c
 
 #Get and build the asm6f assembler
 RUN git clone https://github.com/freem/asm6f.git ./asm6f_src && \
-    gcc asm6f_src/asm6f.c -o $HOME/asm6f && \
+    gcc asm6f_src/asm6f.c -o /usr/bin/asm6f && \
     rm -rf asm6f_src
 
 RUN mkdir -p ${HOME}/Desktop && \
     mkdir -p ${HOME}/.config/mesen && mkdir -p ${HOME}/out && \
     chown -R mono ${HOME}/
 
+COPY patch_source.py $HOME/patch_source.py
 COPY entrypoint.sh $HOME/entrypoint.sh
 USER mono
 WORKDIR $HOME

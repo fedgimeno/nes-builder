@@ -1,12 +1,20 @@
 #!/bin/bash
-
-CHR_IN_F=./src/$1.png
-PRG_IN_F=./src/$1.s
+mkdir -p ./in
+cp -R ./src/* ./in
+CHR_IN_F=./in/$1.png
+PRG_IN_F=./in/$1.s
 PRG_OUT_F=./out/$1_prg.bin
 CHR_OUT_F=./out/$1_chr.bin
 NES_OUT_F=./out/$1.nes
 
-echo $PRG_OUT_F
+#Patch source to fix nested director includes
+echo "Patching sources..."
+python3 patch_source.py
+
+if [ ! "$?" -eq 0 ]; then
+    echo "Error patching sources..."
+    exit $?
+fi
 
 #Compile program
 if test -f "$PRG_OUT_F"; then
@@ -15,7 +23,7 @@ if test -f "$PRG_OUT_F"; then
 fi
 
 echo "Assembling program..."
-./asm6f $PRG_IN_F $PRG_OUT_F || { echo .; echo "Error assembling PRG"; exit 1; }
+asm6f $PRG_IN_F $PRG_OUT_F || { echo .; echo "Error assembling PRG"; exit 1; }
 
 #Compiling CHR
 echo "Compiling CHR"
