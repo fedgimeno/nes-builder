@@ -39,3 +39,6 @@ After successfully assemblying the project, the [Mesen](https://www.mesen.ca/) e
 
 To see the builder in action right away, you can try to build the demo project I have included in the `projects/demo` folder:
 `./make.sh "projects/demo" demo`
+
+Optionally, you can create a link to a directory that its in your $PATH, so that you can conveniently use the "make.sh" script anywhere, i.e.
+`ln make.sh ~/.local/bin/nes-builder`, and use it like `nes-builder "projects/demo" demo` for example.
