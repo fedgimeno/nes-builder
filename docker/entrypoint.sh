@@ -1,5 +1,4 @@
 #!/bin/bash
-#!/bin/bash
 mkdir -p ./in
 cp -R ./src/* ./in
 CHR_IN_F=./in/$1.png
@@ -42,6 +41,5 @@ if test -f "$NES_OUT_F"; then
 fi
 
 cat $PRG_OUT_F $CHR_OUT_F > $NES_OUT_F || { echo .; echo "Error compiling NES file"; exit 1; }
-wine wineboot
 wine $HOME/emu/fceux.exe $NES_OUT_F || exit 1
 

@@ -1,19 +1,8 @@
 FROM wine-docker:latest
 
-#Create user so we don't run wine as root
-RUN useradd -u 1000 -d /home/wine -m -s /bin/bash wine
-RUN export uid=1000 gid=1000 && \
-    mkdir -p /home/wine && mkdir -p /etc/sudoers.d \
-    echo "wine:x:${uid}:${gid}:wine,,,:/home/wine:/bin/bash" >> /etc/passwd && \
-    echo "wine:x:${uid}:" >> /etc/group && \
-    echo "wine ALL=(ALL) NOPASSWD: ALL" > /etc/sudoers.d/wine && \
-    chmod 0440 /etc/sudoers.d/wine && \
-    chown ${uid}:${gid} -R /home/wine
-
 #Install python dependencies and git
-RUN apt-get update -y && apt install -y git python3 python3-pip && pip3 install pypng
+RUN sudo apt-get update -y && sudo apt install -y git python3 python3-pip && sudo pip3 install pypng
 
-USER wine
 ENV HOME /home/wine
 
 WORKDIR $HOME
