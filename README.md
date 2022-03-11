@@ -4,8 +4,8 @@ A quick and dirty, dockerized environment for NES development that runs on linux
 You will need the following dependencies pre-installed:
 
 
-* docker
-* the wine-docker image built beforehand
+* docker.
+* the [wine-docker](https://github.com/fedgimeno/wine-docker) image built beforehand.
 
 ## Setup
 
