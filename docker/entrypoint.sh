@@ -1,4 +1,5 @@
 #!/bin/bash
+#!/bin/bash
 mkdir -p ./in
 cp -R ./src/* ./in
 CHR_IN_F=./in/$1.png
@@ -23,7 +24,7 @@ if test -f "$PRG_OUT_F"; then
 fi
 
 echo "Assembling program..."
-asm6f $PRG_IN_F $PRG_OUT_F || { echo .; echo "Error assembling PRG"; exit 1; }
+./asm6f $PRG_IN_F $PRG_OUT_F || { echo .; echo "Error assembling PRG"; exit 1; }
 
 #Compiling CHR
 echo "Compiling CHR"
@@ -32,15 +33,15 @@ if test -f "$CHR_OUT_F"; then
     rm $CHR_OUT_F
 fi
 
-python3 ./tools/nes-chr-encode/nes_chr_encode.py --color0=000000 --color1=333333 --color2=555555 --color3=AAAAAA $CHR_IN_F $CHR_OUT_F || { echo .; echo "Error assembling CHR"; exit 1; }
+python3 ./tools/nes-chr-encode/nes_chr_encode.py --color0=$COLOR_0 --color1=$COLOR_1 --color2=$COLOR_2 --color3=$COLOR_3 $CHR_IN_F $CHR_OUT_F || { echo .; echo "Error assembling CHR"; exit 1; }
 
 #Make NES rom
 echo "Making NES rom..."
 if test -f "$NES_OUT_F"; then
     echo "$NES_OUT_F already exists, deleting it..."
 fi
-cat $PRG_OUT_F $CHR_OUT_F > $NES_OUT_F || { echo .; echo "Error compiling NES file"; exit 1; }
 
-echo "Running NES rom..."
-chmod 777 ./emu/Mesen.exe
-mono ./emu/Mesen.exe $NES_OUT_F || exit 1
+cat $PRG_OUT_F $CHR_OUT_F > $NES_OUT_F || { echo .; echo "Error compiling NES file"; exit 1; }
+wine wineboot
+wine $HOME/emu/fceux.exe $NES_OUT_F || exit 1
+

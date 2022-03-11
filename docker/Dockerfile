@@ -1,40 +1,43 @@
-FROM mono
+FROM wine-docker:latest
 
-ARG DEBIAN_FRONTEND=noninteractive
-ENV HOME /home/mono
+#Create user so we don't run wine as root
+RUN useradd -u 1000 -d /home/wine -m -s /bin/bash wine
+RUN export uid=1000 gid=1000 && \
+    mkdir -p /home/wine && mkdir -p /etc/sudoers.d \
+    echo "wine:x:${uid}:${gid}:wine,,,:/home/wine:/bin/bash" >> /etc/passwd && \
+    echo "wine:x:${uid}:" >> /etc/group && \
+    echo "wine ALL=(ALL) NOPASSWD: ALL" > /etc/sudoers.d/wine && \
+    chmod 0440 /etc/sudoers.d/wine && \
+    chown ${uid}:${gid} -R /home/wine
 
-RUN apt-get update && apt-get install -y x11-apps
-RUN apt install -y libsdl2-2.0-0 gnome-themes-standard libgtk2.0-0
-RUN apt install -y libasound2-dev pulseaudio
-RUN useradd mono
+#Install python dependencies and git
+RUN apt-get update -y && apt install -y git python3 python3-pip && pip3 install pypng
 
-#Get Python3, pip, and the PyPng python module
-RUN apt install -y python3 python3-pip
-RUN pip3 install pypng
+USER wine
+ENV HOME /home/wine
 
-#Install Git
-RUN apt install -y git
-
-#Get the Mesen emulator
-RUN apt-get install unzip -y && \
-    curl -k -L https://github.com/SourMesen/Mesen/releases/download/0.9.9/Mesen.0.9.9.zip -o mesen.zip && \
-    unzip mesen.zip -d ${HOME}/emu && \
-    rm mesen.zip
-
-#Get nes-chr-encode tool
-RUN git clone https://github.com/play3577/nes-chr-encode.git ${HOME}/tools/nes-chr-encode
+WORKDIR $HOME
 
 #Get and build the asm6f assembler
 RUN git clone https://github.com/freem/asm6f.git ./asm6f_src && \
-    gcc asm6f_src/asm6f.c -o /usr/bin/asm6f && \
+    gcc asm6f_src/asm6f.c -o ./asm6f && \
     rm -rf asm6f_src
 
-RUN mkdir -p ${HOME}/Desktop && \
-    mkdir -p ${HOME}/.config/mesen && mkdir -p ${HOME}/out && \
-    chown -R mono ${HOME}/
+#Install FCEUX emulator
+RUN wget --no-check-certificate https://sourceforge.net/projects/fceultra/files/Binaries/2.6.3/fceux-2.6.3-win32.zip/download -O fceux.zip
+RUN mkdir -p "$HOME/emu" && unzip fceux.zip -d "$HOME/emu"
 
+#Get nes-chr-encode tool
+RUN git clone https://github.com/play3577/nes-chr-encode.git ./tools/nes-chr-encode
+ENV COLOR_0 000000
+ENV COLOR_1 555555
+ENV COLOR_2 AAAAAA
+ENV COLOR_3 FFFFFF
+
+#Setup the x86 wine prefix env vars
+ENV WINEARCH win32 
+ENV WINEPREFIX /home/wine/wine32
+
+COPY entrypoint.sh ./entrypoint.sh
 COPY patch_source.py $HOME/patch_source.py
-COPY entrypoint.sh $HOME/entrypoint.sh
-USER mono
-WORKDIR $HOME
 ENTRYPOINT ["./entrypoint.sh"]

@@ -60,7 +60,8 @@ main:
 	
 	;Enable NMI, sprites pt 1, bg pt 0
 	lda #$88
-	sta PPU_CTRL	
+	sta PPU_CTRL
+
 
 forever:					;Eternal loop	
 	jmp forever
